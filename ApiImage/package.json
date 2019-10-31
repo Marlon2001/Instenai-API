@@ -1,0 +1,25 @@
+{
+  "name": "apiimages",
+  "version": "0.0.1",
+  "description": "api-nodejs",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.17.1",
+    "replace-string": "^3.0.0",
+    "rimraf": "^3.0.0",
+    "sharp": "^0.23.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  }
+}

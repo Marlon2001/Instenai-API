@@ -1,0 +1,37 @@
+<!-- HTML para Testes na Api -->
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>PostImage</title>
+    </head>
+    <body>
+        <table id="table" border="1">
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>FOTO</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script>
+            $(document).ready(function(){
+				const socket = io.connect("http://localhost:3000");
+
+                socket.on("newPost", data => {
+                    console.log(data);
+                    $("#table").append(`
+                        <tr>
+                            <td>${data.nome}</td>
+                            <td><img width=100 src="http://localhost:3000/image/${data.foto}"></td>
+                        </tr>
+                    `);
+				});
+            });     
+        </script>
+    </body>
+</html>
