@@ -5,14 +5,14 @@ const con = require('../db_connection');
 
 module.exports = {
     allPosts(req, res) {
-        con.query("SELECT * FROM tbl_posts", function(err, result, fields) {
+        con.query("SELECT * FROM tbl_posts ORDER BY id_posts DESC", function(err, result, fields) {
             if(err) throw err;
             res.send(result);
         });
     },
     getImage(req, res) {
         const file_name = req.params.name;
-        const file_path = path.resolve(`${__dirname}\\..\\uploads\\imagens\\${file_name}`);
+        const file_path = path.resolve(`${__dirname}/../uploads/imagens/${file_name}`);
         res.sendFile(file_path);
     },
     newImage(req, res) {
@@ -22,7 +22,7 @@ module.exports = {
         const nome = body.nome;
 
         const file_path = req.file.path;
-        const file_name = file_path.split("\\").pop();
+        const file_name = file_path.split("/").pop();
 
         // Salvando no banco o nome do usuário e somente o nome da imagem
         const sql = "INSERT INTO tbl_posts(nome, foto) VALUES('"+nome+"', '"+file_name+"')";
@@ -35,28 +35,25 @@ module.exports = {
     },
     delete(req, res){
         const sql = "DELETE FROM tbl_posts WHERE id_posts > 0";
+	const pass = req.body.pass;
 
-        // Excluindo todos os registros do banco
-        con.query(sql, function() {
-            const pass = req.body.pass;
-
-            if(pass === "instanaietop"){
-                const file_path = path.resolve(`${__dirname}\\..\\uploads\\imagens`);
+	if(pass === "instanaietop") {
+	        // Excluindo todos os registros do banco
+        	con.query(sql, function() {
+                	const file_path = path.resolve(`${__dirname}/../uploads/imagens`);
                 
-                rmdir(file_path, function(error) { // Excluindo diretório do servidor
-                    if(error) throw error;
+	                rmdir(file_path, function(error) { // Excluindo diretório do servidor
+        	            if(error) throw error;
 
-                    if(!fs.existsSync(file_path)) {
-                        fs.mkdirSync(file_path); // Recriando diretor
+	                    if(!fs.existsSync(file_path)) {
+        	                fs.mkdirSync(file_path); // Recriando diretor
 
-                        
-
-                        res.sendStatus(200);
-                    }
-                });
-            } else {
-                res.sendStatus(401);
-            }
-        });
+                	        res.sendStatus(200);
+	                    }
+	                });
+	        });
+	} else {
+		res.sendStatus(401);
+	}
     }
 }
